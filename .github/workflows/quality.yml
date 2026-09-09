@@ -1,0 +1,25 @@
+name: Reproducibility checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot-and-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Verify immutable snapshot
+        run: python tools/verify_snapshot.py
+      - name: Compile project Python sources
+        run: >-
+          python -m compileall -q
+          tools
+          code/nets
+          code/repro

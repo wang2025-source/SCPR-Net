@@ -1,0 +1,16 @@
+# Preserve the supplied snapshot byte-for-byte on every platform.
+code/** -text
+assets/figures/** -text
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.pth binary
+*.ckpt binary
+
+# Publishing-layer text files use stable LF endings.
+*.md text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf
+tools/*.py text eol=lf

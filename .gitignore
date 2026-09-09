@@ -1,0 +1,29 @@
+# Environments and caches
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.idea/
+.vscode/
+
+# Generated experiments
+outputs/
+results/
+*.log
+wandb/
+runs/
+
+# Large/generated data and optional oversized weights
+datasets/
+code/Data/
+code/dataprocessing/MSRS_train/
+code/test_result/
+code/model/Ai.pth
+code/model/Av.pth
+code/model/*_checkpoints/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
