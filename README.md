@@ -2,17 +2,17 @@
 
 # SCPR-Net
 
-### Spatial–Semantic Cross-Modal Prompt Routing Network
+**Spatial–Semantic Cross-Modal Prompt Routing Network**
+<br>
+*Source-aware · Frequency-decoupled · Region-adaptive infrared–visible image fusion*
 
-**Source-aware · Frequency-decoupled · Region-adaptive infrared–visible image fusion**
+[![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=flat-square&logo=python&logoColor=white)](environment.yml)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.2.2-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](environment.yml)
+[![CUDA](https://img.shields.io/badge/CUDA-12.1-76B900?style=flat-square&logo=nvidia&logoColor=white)](environment.yml)
+[![Model](https://img.shields.io/badge/Model-V22-7c3aed?style=flat-square)](MODEL_ZOO.md)
+[![SHA-256](https://img.shields.io/badge/SHA--256-verified-0f766e?style=flat-square)](SNAPSHOT_SHA256SUMS)
 
-[![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](environment.yml)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.2.2-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](environment.yml)
-[![CUDA](https://img.shields.io/badge/CUDA-12.1-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](environment.yml)
-[![Model Zoo](https://img.shields.io/badge/model-V22-7c3aed?style=for-the-badge)](MODEL_ZOO.md)
-[![Reproducibility](https://img.shields.io/badge/reproducibility-SHA--256_verified-0f766e?style=for-the-badge)](SNAPSHOT_SHA256SUMS)
-
-[Architecture](ARCHITECTURE.md) · [Quick Start](#quick-start) · [Training](#training) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets)
+**[Architecture](ARCHITECTURE.md) · [Quick Start](#quick-start) · [Training](#training) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets)**
 
 </div>
 
