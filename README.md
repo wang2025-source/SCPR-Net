@@ -46,19 +46,7 @@ python -m pip install --no-build-isolation -r requirements-mamba.txt
 
 `mamba-ssm` compiles CUDA extensions; install it after PyTorch and the CUDA toolkit are confirmed available.
 
-### 2. Verify the release
-
-```bash
-python tools/verify_snapshot.py
-```
-
-Checks the V22 source, three checkpoints, test images, and original paper figures. Expected output:
-
-```text
-Snapshot verified: 53 file(s)
-```
-
-### 3. Inference
+### 2. Inference
 
 Run fusion on aligned IR/visible pairs:
 
