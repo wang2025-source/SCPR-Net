@@ -21,8 +21,18 @@ def digest(path: Path) -> str:
 
 def snapshot_files() -> list[Path]:
     files: list[Path] = []
-    for directory in (ROOT / "code", ROOT / "assets" / "figures"):
-        files.extend(path for path in directory.rglob("*") if path.is_file())
+    files.extend(
+        path
+        for path in (ROOT / "code").rglob("*")
+        if path.is_file()
+        and path.suffix.lower() != ".pyc"
+        and "__pycache__" not in path.parts
+    )
+    files.extend(
+        path
+        for path in (ROOT / "assets" / "figures").rglob("*")
+        if path.is_file() and path.suffix.lower() in {".png", ".pdf"}
+    )
     return sorted(files, key=lambda path: path.relative_to(ROOT).as_posix())
 
 

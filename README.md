@@ -14,10 +14,28 @@ SCPR-Net/
 ├── assets/figures/          # 原“图片”目录中的全部 PNG/PDF
 ├── tools/infer_scpr.py      # 不改原源码的便携 SCPR 推理入口
 ├── tools/verify_snapshot.py # SHA-256 完整性校验
+├── ARCHITECTURE.md          # V22 网络结构与源码索引
 ├── REPRODUCIBILITY.md       # 环境、数据、训练、推理和评测说明
 ├── MODEL_ZOO.md             # 权重清单与依赖关系
 └── SNAPSHOT_SHA256SUMS      # 代码和图片的固定哈希
 ```
+
+## V22 网络结构
+
+```mermaid
+flowchart LR
+    IR[Infrared] --> V10[V10 Source/Wave/ASSM backbone]
+    VI[Visible Y] --> V10
+    V10 --> V12[V12 region-detail head]
+    IR --> V12
+    VI --> V12
+    V12 --> V22[V22 semantic region-MoE]
+    IR --> V22
+    VI --> V22
+    V22 --> OUT[Fused image]
+```
+
+V22 的顶层实现保留在 `code/nets/Ufuser_region_moe_v19.py` 中，类名仍为 `UfuserRegionMoEV19`；V22 是该结构继续训练后选出的最佳权重。全部网络模块、类与文件依赖见 [ARCHITECTURE.md](ARCHITECTURE.md)。
 
 ## 快速开始
 
@@ -52,6 +70,10 @@ python tools/infer_scpr.py \
 ```
 
 完整的数据布局、训练入口、评测方式和复现边界见 [REPRODUCIBILITY.md](REPRODUCIBILITY.md)。权重说明见 [MODEL_ZOO.md](MODEL_ZOO.md)。
+
+## 图片
+
+原“图片”文件夹中的 **17 个文件（14 个 PNG、3 个 PDF）已全部逐字节上传**。可在 [完整图片画廊](assets/figures/README.md) 中逐张查看；原始文件名与 SHA-256 均已保留。
 
 ## 输入约定
 
