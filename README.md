@@ -12,7 +12,7 @@
 [![Model Zoo](https://img.shields.io/badge/model-V22-7c3aed?style=for-the-badge)](MODEL_ZOO.md)
 [![Reproducibility](https://img.shields.io/badge/reproducibility-SHA--256_verified-0f766e?style=for-the-badge)](SNAPSHOT_SHA256SUMS)
 
-[Architecture](ARCHITECTURE.md) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets)
+[Architecture](ARCHITECTURE.md) · [Quick Start](#quick-start) · [Training](#training) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets)
 
 </div>
 
@@ -62,6 +62,32 @@ python tools/infer_scpr.py \
 ```
 
 The original entry point [`code/repro/infer_region_moe_v19.py`](code/repro/infer_region_moe_v19.py) requires only `--model` and resolves the V12 stage from the path recorded in the checkpoint; `tools/infer_scpr.py` reconstructs the same V10 → V12 → V22 chain from explicit local paths, making the snapshot fully portable. Infrared and visible images must share the same filename and resolution. The visible image is converted to its Y channel and the output is a grayscale fused image. PNG, JPG, JPEG, BMP, TIF, and TIFF are supported.
+
+## Training
+
+Training follows the staged V10 → V12 → V22 pipeline on the [MSRS](https://github.com/Linfeng-Tang/MSRS) benchmark, laid out as `datasets/MSRS-main/{train,test}/{ir,vi,Segmentation_labels}`.
+
+### Stage 1 — Pareto/ASSM V8 (V10 backbone)
+
+```bash
+python code/repro/train_pareto_assm_v8.py \
+  --data-root datasets/MSRS-main \
+  --split-checkpoint code/model/MSRS_LRASPP_teacher_v2_best.ckpt \
+  --init-emma code/model/EMMA_trained.pth \
+  --output outputs/checkpoints/EMMA_PARETO_ASSM_V8.ckpt \
+  --seed 3407
+```
+
+### Stage 2 — V12 → V22 region-MoE continuation
+
+```bash
+python code/repro/train_region_moe_v19.py \
+  --init-v12 code/model/EMMA_V10_REGION_DETAIL_V12_FIXED_STRONG.ckpt \
+  --output outputs/checkpoints/EMMA_REGION_MOE_V22.ckpt \
+  --seed 3407
+```
+
+`train_region_moe_v19.py` reads the V10 reference and MSRS split from the V12 checkpoint's recorded config. Per-stage checkpoints and CSV logs are written next to `--output`; resume with `--resume`. All hyperparameters keep their defaults; the complete protocol is in [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
 ## Datasets
 
