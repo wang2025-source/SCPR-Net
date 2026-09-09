@@ -12,24 +12,13 @@
 [![Model Zoo](https://img.shields.io/badge/model-V22-7c3aed?style=for-the-badge)](MODEL_ZOO.md)
 [![Reproducibility](https://img.shields.io/badge/reproducibility-SHA--256_verified-0f766e?style=for-the-badge)](SNAPSHOT_SHA256SUMS)
 
-[Architecture](ARCHITECTURE.md) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets) · [Citation](#citation)
+[Architecture](ARCHITECTURE.md) · [Reproducibility](REPRODUCIBILITY.md) · [Model Zoo](MODEL_ZOO.md) · [Datasets](#datasets)
 
 </div>
 
 <p align="center">
   <img src="assets/figures/图片10.png" width="100%" alt="SCPR-Net qualitative and quantitative overview">
 </p>
-
-## Overview
-
-SCPR-Net organizes source-conditional prompting, cross-modal interaction, frequency decoupling, and spatial-semantic region routing in a unified network for infrared–visible image fusion. The release provides the **V22** model with a complete inference-weight chain, a portable entry point, a pinned environment, metric evaluation code, and SHA-256 integrity verification.
-
-| Component | Role |
-|---|---|
-| **Source-aware shallow interaction** | Generates source queries from raw IR/visible inputs for bidirectional cross-modal interaction in shallow layers. |
-| **Frequency-decoupled deep fusion** | Haar decomposition separates low-frequency structure from high-frequency detail; paired semantic ASSM handles the former, reliability routing the latter. |
-| **Region-adaptive detail enhancement** | Bounded region detail head built on the V10 backbone strengthens local responses while limiting unstable drift. |
-| **Spatial-semantic multi-frequency routing** | V22 routes low/coarse/fine frequency bands between infrared, visible, and V12 baseline experts under semantic conditions. |
 
 ## Architecture
 
@@ -69,7 +58,9 @@ Checks the V22 source, three checkpoints, test images, and original paper figure
 Snapshot verified: 53 file(s)
 ```
 
-### 3. Run V22 inference
+### 3. Inference
+
+Run fusion on aligned IR/visible pairs:
 
 ```bash
 python tools/infer_scpr.py \
@@ -82,7 +73,7 @@ python tools/infer_scpr.py \
   --device cuda
 ```
 
-Infrared and visible images must share the same filename and resolution. The visible image is converted to its Y channel and the output is a grayscale fused image. PNG, JPG, JPEG, BMP, TIF, and TIFF are supported.
+The original entry point [`code/repro/infer_region_moe_v19.py`](code/repro/infer_region_moe_v19.py) requires only `--model` and resolves the V12 stage from the path recorded in the checkpoint; `tools/infer_scpr.py` reconstructs the same V10 → V12 → V22 chain from explicit local paths, making the snapshot fully portable. Infrared and visible images must share the same filename and resolution. The visible image is converted to its Y channel and the output is a grayscale fused image. PNG, JPG, JPEG, BMP, TIF, and TIFF are supported.
 
 ## Datasets
 
@@ -165,24 +156,3 @@ SCPR-Net/
 - Snapshot hashes and Python syntax are checked automatically in CI.
 
 See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the full protocol.
-
-## Citation
-
-SCPR-Net is a continuation of [EMMA](https://arxiv.org/abs/2305.11443) (CVPR 2024). Please cite the base work when using this repository:
-
-```bibtex
-@InProceedings{Zhao_2024_CVPR,
-  author    = {Zhao, Zixiang and Bai, Haowen and Zhang, Jiangshe and Zhang, Yulun and Zhang, Kai and Xu, Shuang and Chen, Dongdong and Timofte, Radu and Van Gool, Luc},
-  title     = {Equivariant Multi-Modality Image Fusion},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  year      = {2024}
-}
-```
-
-## Acknowledgements & License
-
-Ideas and components are inherited from EMMA and related research; source attribution is documented in [NOTICE.md](NOTICE.md). This snapshot does not introduce a new license — verify the terms of the respective right holders before use, modification, or redistribution.
-
-<div align="center">
-  <b>SCPR-Net · V22 reproducible release</b>
-</div>
