@@ -44,9 +44,11 @@ python -m pip install --no-build-isolation -r requirements-mamba.txt
 
 `mamba-ssm` compiles CUDA extensions; install it after PyTorch and the CUDA toolkit are confirmed available.
 
-### 2. Inference
+### 2. Testing
 
-Run fusion on aligned IR/visible pairs:
+The original entry point [`code/repro/infer_region_moe_v19.py`](code/repro/infer_region_moe_v19.py) requires only `--model`; `tools/infer_scpr.py` reconstructs the same V10 → V12 → V22 chain from explicit local paths, making the snapshot fully portable. Infrared and visible images must share the same filename and resolution; the visible image is converted to its Y channel and the output is a grayscale fused image (PNG, JPG, JPEG, BMP, TIF, TIFF).
+
+**Quick check on the bundled samples:**
 
 ```bash
 python tools/infer_scpr.py \
@@ -59,7 +61,30 @@ python tools/infer_scpr.py \
   --device cuda
 ```
 
-The original entry point [`code/repro/infer_region_moe_v19.py`](code/repro/infer_region_moe_v19.py) requires only `--model` and resolves the V12 stage from the path recorded in the checkpoint; `tools/infer_scpr.py` reconstructs the same V10 → V12 → V22 chain from explicit local paths, making the snapshot fully portable. Infrared and visible images must share the same filename and resolution. The visible image is converted to its Y channel and the output is a grayscale fused image. PNG, JPG, JPEG, BMP, TIF, and TIFF are supported.
+**Benchmark test on a dataset's test split (e.g. MSRS):**
+
+```bash
+python tools/infer_scpr.py \
+  --model code/model/EMMA_REGION_MOE_V22.ckpt \
+  --v12-model code/model/EMMA_V10_REGION_DETAIL_V12_FIXED_STRONG.ckpt \
+  --v10-model code/model/EMMA_SOURCE_WAVE_ASSM_V10_SCREEN_best_pareto.ckpt \
+  --ir-dir datasets/MSRS-main/test/ir \
+  --vi-dir datasets/MSRS-main/test/vi \
+  --output-dir outputs/scpr-v22 \
+  --device cuda
+```
+
+Point `--ir-dir` / `--vi-dir` at the corresponding test folder of TNO, RoadScene, M³FD, or LLVIP to reproduce results on those datasets.
+
+**Quantitative metrics (EN, SD, SF, AG, SCD, VIF):**
+
+```bash
+python code/repro/evaluate_metrics_parallel.py \
+  --ir-dir datasets/MSRS-main/test/ir \
+  --vi-dir datasets/MSRS-main/test/vi \
+  --fused-dir outputs/scpr-v22 \
+  --output outputs/scpr-v22-metrics.json
+```
 
 ## Training
 
