@@ -2,9 +2,7 @@
 
 # SCPR-Net
 
-**Spatial–Semantic Cross-Modal Prompt Routing Network**
-<br>
-*Source-aware · Frequency-decoupled · Region-adaptive infrared–visible image fusion*
+**Infrared and Visible Image Fusion via Source-Conditioned Hierarchical Cross-Modal Collaboration and Progressive Spatial-Frequency Reconstruction**
 
 [![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=flat-square&logo=python&logoColor=white)](environment.yml)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.2.2-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](environment.yml)
