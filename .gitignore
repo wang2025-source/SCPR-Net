@@ -1,0 +1,25 @@
+# Environments and caches
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.idea/
+.vscode/
+
+# Generated experiments
+outputs/
+results/
+*.log
+wandb/
+runs/
+
+# Datasets and generated weights
+datasets/
+*.pth
+*.ckpt
+
+# OS/editor files
+.DS_Store
+Thumbs.db

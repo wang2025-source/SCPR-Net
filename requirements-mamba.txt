@@ -1,0 +1,2 @@
+# Install after creating environment.yml; CUDA toolkit and PyTorch must already work.
+mamba-ssm==2.3.2.post1

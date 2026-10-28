@@ -1,0 +1,29 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install CPU test dependencies
+        run: |
+          python -m pip install torch==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==1.24.3 einops==0.7.0 opencv-python-headless==4.9.0.80 tqdm==4.66.2
+      - name: Compile project Python sources
+        run: >-
+          python -m compileall -q
+          tools
+          code/nets
+          code/repro
+      - name: Check training and testing
+        run: python tools/check_scpr.py
